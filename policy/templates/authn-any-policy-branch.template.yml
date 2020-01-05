@@ -13,7 +13,7 @@
       description: Layer of authenticator identities permitted to call authn svc
   - &hosts
     - !host
-      id: {{ TEST_APP_NAMESPACE_NAME }}/*/*
+      id: {{ TEST_APP_NAMESPACE_NAME }}/service_account/test-app-with-host-outside-apps-branch-summon-init
       annotations:
         kubernetes/authentication-container-name: authenticator
         openshift: "true"

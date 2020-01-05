@@ -212,7 +212,7 @@ deploy_init_container_app_with_host_outside_apps() {
 
   sleep 5
 
-  conjur_authn_login="host/some-apps/$TEST_APP_NAMESPACE_NAME/*/*"
+  conjur_authn_login="host/some-apps/$TEST_APP_NAMESPACE_NAME/service_account/test-app-with-host-outside-apps-branch-summon-init"
 
   sed "s#{{ TEST_APP_DOCKER_IMAGE }}#$test_init_app_docker_image#g" ./$PLATFORM/test-app-with-host-outside-apps-branch-summon-init.yml |
     sed "s#{{ AUTHENTICATOR_CLIENT_IMAGE }}#$authenticator_client_image#g" |
