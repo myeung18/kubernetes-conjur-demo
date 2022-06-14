@@ -37,7 +37,7 @@ pushd test_app_summon
       dockerfile="Dockerfile.oc"
     fi
 
-    echo "Building test app image"
+    echo "Building test app image - $app_type - $PLATFORM"
     docker build \
       --build-arg namespace=$TEST_APP_NAMESPACE_NAME \
       --tag test-app:$CONJUR_NAMESPACE_NAME \
@@ -46,7 +46,9 @@ pushd test_app_summon
     test_app_image=$(platform_image_for_push "test-$app_type-app")
     docker tag test-app:$CONJUR_NAMESPACE_NAME $test_app_image
 
+    echo "to push to the is_minienv: - $test_app_image"
     if ! is_minienv; then
+      echo "doing docker push $test_app_image"
       docker push $test_app_image
     fi
   done

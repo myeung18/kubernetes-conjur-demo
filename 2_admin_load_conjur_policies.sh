@@ -13,13 +13,16 @@ prepare_conjur_cli_image() {
   cli_app_image=$(platform_image_for_push conjur-cli)
   docker tag cyberark/conjur-cli:$CONJUR_VERSION-latest $cli_app_image
 
-  if ! is_minienv; then
-    docker push $cli_app_image
-  fi
+ # if ! is_minienv; then
+    #docker push $cli_app_image
+ # fi
 }
 
 deploy_conjur_cli() {
   announce "Deploying Conjur CLI pod."
+
+  announce "run adm policy add-scc "
+  $cli adm policy add-scc-to-user anyuid -z conjur-oss -n $CONJUR_NAMESPACE_NAME
 
   if is_minienv; then
     IMAGE_PULL_POLICY='Never'

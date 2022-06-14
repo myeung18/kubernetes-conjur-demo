@@ -18,6 +18,7 @@ main() {
     IMAGE_PULL_POLICY='Always'
   fi
 
+  echo "IMAGE_PULL_POLICY: $IMAGE_PULL_POLICY"
   deploy_app_backend
   deploy_secretless_app
   deploy_sidecar_app
@@ -38,7 +39,7 @@ init_registry_creds() {
       --docker-password=$DOCKER_PASSWORD \
       --docker-email=$DOCKER_EMAIL
   elif [[ "$PLATFORM" == "openshift" ]]; then
-    announce "Creating image pull secret."
+    announce "Creating image pull secret. - $PLATFORM $PULL_DOCKER_REGISTRY_URL"
     
     $cli delete --ignore-not-found secrets dockerpullsecret
 
@@ -156,6 +157,8 @@ deploy_sidecar_app() {
       route/test-app-summon-sidecar
   fi
 
+  $cli adm policy add-scc-to-user anyuid -z oc-test-app-summon-sidecar 
+
   sleep 5
 
   sed "s#{{ TEST_APP_DOCKER_IMAGE }}#$test_sidecar_app_docker_image#g" ./$PLATFORM/test-app-summon-sidecar.yml |
@@ -191,6 +194,8 @@ deploy_init_container_app() {
       deploymentconfig/test-app-summon-init \
       route/test-app-summon-init
   fi
+
+  $cli adm policy add-scc-to-user anyuid -z oc-test-app-summon-init 
 
   sleep 5
 
@@ -228,6 +233,8 @@ deploy_init_container_app_with_host_outside_apps() {
       route/test-app-with-outside-host-summon-init
   fi
 
+  $cli adm policy add-scc-to-user anyuid -z oc-test-app-with-outside-host-summon-init
+  
   sleep 5
 
   conjur_authn_login="host/some-apps/$TEST_APP_NAMESPACE_NAME/*/*"

@@ -7,7 +7,7 @@ announce "Storing Conjur cert for test app configuration."
 
 set_namespace $CONJUR_NAMESPACE_NAME
 
-echo "Retrieving Conjur certificate."
+echo "Retrieving Conjur certificate: $CONJUR_OSS_HELM_INSTALLED"
 
 if [[ "$CONJUR_OSS_HELM_INSTALLED" == "true" ]]; then
   master_pod_name=$(get_master_pod_name)
